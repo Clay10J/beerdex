@@ -3,13 +3,19 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
+	"github.com/a-h/templ"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"github.com/clay10j/beerdex/views"
 )
+
+func render(ctx echo.Context, tc templ.Component) error {
+	return tc.Render(ctx.Request().Context(), ctx.Response())
+}
 
 func main() {
 	err := godotenv.Load(".env")
@@ -27,9 +33,11 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	e.GET("/", helloWorld)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%v", port)))
+}
+
+func helloWorld(c echo.Context) error {
+	return render(c, views.Hello("Clay"))
 }
