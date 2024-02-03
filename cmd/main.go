@@ -14,10 +14,6 @@ import (
 	"github.com/clay10j/beerdex/views"
 )
 
-func render(ctx echo.Context, tc templ.Component) error {
-	return tc.Render(ctx.Request().Context(), ctx.Response())
-}
-
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -54,6 +50,10 @@ func main() {
 	e.DELETE("/api/ratings/:id", handlers.HandleDeleteRating)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%v", port)))
+}
+
+func render(ctx echo.Context, tc templ.Component) error {
+	return tc.Render(ctx.Request().Context(), ctx.Response())
 }
 
 func helloWorld(c echo.Context) error {

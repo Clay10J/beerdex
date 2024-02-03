@@ -1,6 +1,8 @@
 package handlers
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/labstack/echo/v4"
+)
 
 func HandleCreateBeer(c echo.Context) error {
 	return nil
