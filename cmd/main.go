@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/a-h/templ"
@@ -30,7 +31,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.GET("/", helloWorld)
+	e.GET("/", homepage)
 	e.GET("/api/beers", handlers.HandleGetAllBeers)
 	e.POST("/api/beers", handlers.HandleCreateBeer)
 	e.GET("/api/beers/:id", handlers.HandleGetBeer)
@@ -52,10 +53,13 @@ func main() {
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%v", port)))
 }
 
-func render(ctx echo.Context, tc templ.Component) error {
+// This custom Render replaces Echo's echo.Context.Render() with templ's templ.Component.Render().
+func render(ctx echo.Context, statusCode int, tc templ.Component) error {
+	ctx.Response().Writer.WriteHeader(statusCode)
+	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 	return tc.Render(ctx.Request().Context(), ctx.Response())
 }
 
-func helloWorld(c echo.Context) error {
-	return render(c, views.Hello("Clay"))
+func homepage(c echo.Context) error {
+	return render(c, http.StatusOK, views.Home())
 }
