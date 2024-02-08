@@ -9,12 +9,12 @@ import (
 )
 
 type Beer struct {
-	BeerID      int64
-	BeerName    string
-	BreweryID   int64
-	Abv         sql.NullFloat64
-	CreatedAt   sql.NullTime
-	PackageType string
+	BeerID    int64
+	BeerName  string
+	BreweryID int64
+	Abv       float64
+	CreatedAt sql.NullTime
+	BeerType  string
 }
 
 type Brewery struct {
