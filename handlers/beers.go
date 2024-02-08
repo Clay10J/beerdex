@@ -13,8 +13,6 @@ import (
 	"github.com/clay10j/beerdex/models"
 )
 
-// TODO: Add more Get methods for enhanced UX (ex: get by name, type, brewery, etc.)
-
 func (cfg *HandlerConfig) HandleCreateBeer(c echo.Context) error {
 	beer := new(models.Beer)
 	if err := c.Bind(beer); err != nil {
